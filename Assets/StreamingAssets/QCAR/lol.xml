@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="LOL" size="1.000000 0.700000" />
+    <ImageTarget name="NEW" size="297.000000 207.899994" />
+    <ImageTarget name="Blog-le-vieux-biniou" size="210.000000 297.000000" />
+    <ImageTarget name="Jss1QTnFP18" size="210.000000 210.000000" />
+    <ImageTarget name="auQc2" size="210.000000 147.000000" />
+    <ImageTarget name="PolyA" size="210.000000 111.916847" />
+  </Tracking>
+</QCARConfig>
