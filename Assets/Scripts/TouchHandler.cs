@@ -52,26 +52,24 @@ public class TouchHandler : MonoBehaviour
     }
     void Update()
     {
-        if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
-        {
-            Ray raycast = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-            RaycastHit raycastHit;
-            if (Physics.Raycast(raycast, out raycastHit))
-            {
-                Debug.Log("Something Hit");
-                if (raycastHit.collider.name == "Soccer")
-                {
-                    Debug.Log("Soccer Ball clicked");
-                }
-                Clicked(raycastHit);
-                //OR with Tag
+        //if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
+        //{
+        //    Ray raycast = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+        //    RaycastHit raycastHit;
+            
+        //        if (Physics.Raycast(raycast, out raycastHit))
+        //        {
+        //            if (raycastHit.collider.GetComponent<ClickBox>())
+        //            {
+        //            raycastHit.collider.GetComponent<ClickBox>()
+        //                      .Click(ref Tiles);
+        //            }
+        //            SwitchOffAll();
+        //            var obj = Tiles[StarWidth][StartHieght].GetComponent<TileObject>();
 
-                if (raycastHit.collider.CompareTag("SoccerTag"))
-                {
-                    Debug.Log("Soccer Ball clicked");
-                }
-            }
-        }
+        //            ProcessTile(ref obj);
+        //        }
+        //}
 
         //if (Input.GetMouseButtonDown(0))
         //{

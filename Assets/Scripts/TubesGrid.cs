@@ -235,14 +235,15 @@ public class TubesGrid : MonoBehaviour
             yield return null;
         }
         //t.TubeObject.transform.Translate(-0.8f * width, 0.8f * height, 0);
-        Destroy(t.TubeObject.gameObject);
-        t.TubeObject = Instantiate(TubePrefabs[0], pos, TubePrefabs[0].transform.rotation);
-        t.TubeObject.transform.position = pos;
-        t.TubeObject.GetComponent<Renderer>().enabled = false;
-
-        TubeID.CreateComponent(t.TubeObject, i, y);
+        //Destroy(t.TubeObject.gameObject);
+        //t.TubeObject = Instantiate(TubePrefabs[0], pos, TubePrefabs[0].transform.rotation);
+       // t.TubeObject.transform.position = pos;
+        //t.TubeObject.GetComponent<Renderer>().enabled = false;
+        Destroy(t.TubeObject.GetComponent<TubeID>());
+        TubeID.CreateComponent(t.TubeObject, i+width, y+height);
         t.TurnOff();
-        next.TubeObject.GetComponent<Renderer>().enabled = true;
+
+        //next.TubeObject.GetComponent<Renderer>().enabled = true;
 
     }
     private static bool ShiftInternal(int currentWidth, int currentHeight, int shiftWidth, int shiftHeight)
@@ -259,9 +260,7 @@ public class TubesGrid : MonoBehaviour
             var obj = TubesGrid.TileGrid[currentWidth][currentHeight].TubeObject;
             TubesGrid.TileGrid[currentWidth][currentHeight] = new Tile.Empty(currentWidth, currentHeight);
             // TubesGrid.TileGrid[currentWidth + shiftWidth][currentHeight + shiftHeight];
-            TubesGrid.TileGrid[currentWidth][currentHeight].TubeObject = obj;
            // TubesGrid.TileGrid[currentWidth][currentHeight].TubeObject.GetComponent<Renderer>().material.color = Color.red;
-            TubesGrid.Instance.StartCoroutine(TubesGrid.Instance.SlowShift(TileGrid[currentWidth][currentHeight], TileGrid[currentWidth + shiftWidth][currentHeight + shiftHeight], shiftWidth, shiftHeight));
             //TubesGrid.TileGrid[currentWidth ][currentHeight ].TubeObject.GetComponent<TubeID>().SetIndex(currentWidth , currentHeight );
             //TubesGrid.TileGrid[currentWidth ][currentHeight ].TubeObject.transform.Translate(shiftWidth * 0.8f, shiftHeight * 0.8f, 0);
 
@@ -271,12 +270,15 @@ public class TubesGrid : MonoBehaviour
             ////TubesGrid.TileGrid[currentWidth][currentHeight].HeightIndex = currentHeight;
             //Destroy(TubesGrid.TileGrid[currentWidth + shiftWidth][currentHeight + shiftHeight].TubeObject.gameObject);
             var obj1 = TubesGrid.TileGrid[currentWidth + shiftWidth][currentHeight + shiftHeight].TubeObject;
+            TubesGrid.TileGrid[currentWidth][currentHeight].TubeObject = obj;
+            TubesGrid.Instance.StartCoroutine(TubesGrid.Instance.SlowShift(TileGrid[currentWidth][currentHeight], TileGrid[currentWidth + shiftWidth][currentHeight + shiftHeight], shiftWidth, shiftHeight));
 
             TubesGrid.TileGrid[currentWidth + shiftWidth][currentHeight + shiftHeight] = new Tile(currentWidth + shiftWidth, currentHeight + shiftHeight);
             TubesGrid.TileGrid[currentWidth + shiftWidth][currentHeight + shiftHeight].TubeObject = obj1;
+            
         
             //TubesGrid.TileGrid[currentWidth + shiftWidth][currentHeight + shiftHeight].TubeObject.GetComponent<Renderer>().material.color = Color.black;
-            // TubesGrid.TileGrid[currentWidth + shiftWidth][currentHeight + shiftHeight].TubeObject.GetComponent<TubeID>().SetIndex(currentWidth + shiftWidth, currentHeight + shiftHeight);
+             TubesGrid.TileGrid[currentWidth + shiftWidth][currentHeight + shiftHeight].TubeObject.GetComponent<TubeID>().SetIndex(currentWidth , currentHeight );
             //TubesGrid.TileGrid[currentWidth + shiftWidth][currentHeight + shiftHeight].TubeObject.transform.Translate(-shiftWidth*0.8f,-shiftHeight*0.8f,0);
             //TubesGrid.TileGrid[currentWidth + shiftWidth][currentHeight + shiftHeight].TubeObject = t.TubeObject;
             //TubesGrid.TileGrid[currentWidth + shiftWidth][currentHeight + shiftHeight].TubeObject.transform.Translate(0.8f * shiftWidth, 0.8f * shiftHeight, 0);
