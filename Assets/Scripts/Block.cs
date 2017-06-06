@@ -36,6 +36,7 @@ public class Block
 					Represent.transform.localScale.x/2 * item.Key.IndexHeight);
 				cube.GetComponent<Renderer>().material.color = Color.white;
 				cube.transform.parent = Represent.transform;
+				GameObject.Destroy(cube.GetComponent<BoxCollider>());
 			}
 		}
 		//if (ConnectonLeft)

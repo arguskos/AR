@@ -15,7 +15,6 @@ public class MainGridDrawer : MonoBehaviour
 	private List<Dir> _dirs = new List<Dir>();
 	public GameObject ImageTarget;
 	//TODO dele unuse text asset;
-	public TextAsset tx;
 	public bool AR;
 	private Vector3 _centerPos;
 	// Use this for initialization
@@ -35,7 +34,7 @@ public class MainGridDrawer : MonoBehaviour
 			newGR.Start();
 			newGR.Size = Size;
 			newGR.level = Levels[i];
-			newGR.ReCreateGrid(tx);
+			newGR.ReCreateGrid();
 			if (AR)
 			{
 				gr.transform.parent = ImageTarget.transform;
@@ -43,7 +42,7 @@ public class MainGridDrawer : MonoBehaviour
 			_grids.Add(gr);
 		}
 		_centerPos = _grids[0].transform.position;
-		
+		Server.Instance.EnteredRoom();
 	}
 
 	public void NextLevel()

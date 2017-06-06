@@ -39,7 +39,6 @@ public class Grid : MonoBehaviour
 
 	public Coordinate EmptyBlockPos;
 	public Coordinate WaterStart;
-	public TextAsset tx;
 	public int Width, Height;
 	public int level;
 	public float Size;
@@ -133,7 +132,7 @@ public class Grid : MonoBehaviour
 			{
 				if (block.Watered)
 				{
-					block.Represent.GetComponent<Renderer>().material.color = Color.black;// = block.Represent.GetComponent<Renderer>().sharedMaterial;
+					block.Represent.GetComponent<Renderer>().material.color = Color.white;// = block.Represent.GetComponent<Renderer>().sharedMaterial;
 				}
 				block.Watered = false;
 				
@@ -142,7 +141,7 @@ public class Grid : MonoBehaviour
 	}
 	public void WaterFlow(int w,int h)
 	{
-		if (!Blocks[w][h].Watered)
+		if (!Blocks[w][h].Watered && ! (Blocks[w][h] is EmptyBlock ))
 		{
 			Blocks[w ][h ].Represent
 					.GetComponent<Renderer>().material.color = Color.blue;
@@ -243,12 +242,10 @@ public class Grid : MonoBehaviour
 	}
 
 
-	public void ReCreateGrid(TextAsset txa)
+	public void ReCreateGrid()
 	{
 		string path = Application.dataPath + "/Resources/" + "level" + level.ToString() + "";
 		TextAsset tx= (TextAsset)Resources.Load("level" + level.ToString());
-		print(tx);
-		print(path);
 
 		//if (File.Exists(path+".txt"))
 		//{
@@ -285,7 +282,6 @@ public class Grid : MonoBehaviour
 				Quaternion rotate = Quaternion.identity * rotBase	; 
 				if ((Blocks[i][j] as EmptyBlock) != null)
 				{
-					print(PrefabsPool.Instanse.name);
 					obj = Instantiate(PrefabsPool.Instanse.EmptyBlock, translate,rotate);
 					block = new EmptyBlock(i, j, obj);
 
@@ -293,6 +289,8 @@ public class Grid : MonoBehaviour
 				else
 				{
 					obj = Instantiate(PrefabsPool.Instanse.Block, translate, rotate);
+					obj.GetComponent<Renderer>().material.color = Color.white;
+
 					//block = new Block(i, j, obj);
 					if (i==WaterStart.IndexWidth&&j==WaterStart.IndexHeight)
 					{
@@ -319,12 +317,13 @@ public class Grid : MonoBehaviour
 
 		WaterStart = new Coordinate(0, 0);
 		
-		//CreateGrid();		
+		//CreateGrid();	
 	}
-
+	
 	// Update is called once per frame
 	void Update()
 	{
+
 		if (Input.GetMouseButtonDown(0))
 		{
 			RaycastHit hit;
