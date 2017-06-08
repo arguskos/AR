@@ -13,16 +13,9 @@ using UnityEngine.SceneManagement;
 
 [System.Serializable]
 
-public enum HiveStates
-{
-	Playing,
-	Walking
-}
-[System.Serializable]
-
 public class ServerMessage
 {
-	public ServerMessage(int time, HiveStates state)
+	public ServerMessage(int time, MyMessage1.HiveStates state)
 	{
 		Time = time;
 		State = state;
@@ -58,7 +51,7 @@ public class Client : MonoBehaviour
 
 
 		_mySocket = new TcpClient(Host, Port);
-
+        print("connected    ");
 		_myStream = _mySocket.GetStream();
 		_myWriter = new StreamWriter(_myStream);
 		_myReader = new StreamReader(_myStream);
@@ -112,11 +105,19 @@ public class Client : MonoBehaviour
 		var d = new BinaryFormatter().Deserialize(_myStream) as BaseMessage;
 		if ((d as ServerTime) != null)
 		{
+
 			RoomTimer.text=(d as ServerTime).Time.ToString();
-		}
-		else if ((d as StateChanged) != null)
+		    if ((d as ServerTime).Time < 0.7f)
+		    {
+                CloseSocket();
+		   //SceneManager.LoadScene("AR");
+            }
+
+        }
+		else if ((d as HiveStateChanged) != null)
 		{
-			SceneManager.LoadScene("AR");
+           
+			//SceneManager.LoadScene("AR");
 		}
 		//print(d.Time);
 	}
@@ -142,7 +143,7 @@ public class Client : MonoBehaviour
 	{
 		while (true)
 		{
-			if (_created)
+			if (_created && SocketReady)
 			{
 
 				GetServerMessage();
@@ -163,7 +164,10 @@ public class Client : MonoBehaviour
 		{
 			SendScore();
 		}
-	}
-
+        	}
+    void OnApplicationQuit()
+    {
+        CloseSocket();
+    }
 } 
 

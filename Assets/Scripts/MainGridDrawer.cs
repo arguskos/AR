@@ -42,7 +42,6 @@ public class MainGridDrawer : MonoBehaviour
 			_grids.Add(gr);
 		}
 		_centerPos = _grids[0].transform.position;
-		Server.Instance.EnteredRoom();
 	}
 
 	public void NextLevel()
