@@ -39,7 +39,6 @@ public class Grid : MonoBehaviour
 
 	public Coordinate EmptyBlockPos;
 	public Coordinate WaterStart;
-
 	public int Width, Height;
 	public int level;
 	public float Size;
@@ -53,7 +52,7 @@ public class Grid : MonoBehaviour
 
 		while (time < 1)
 		{
-			time += 0.1f; ;
+			time += 0.2f; ;
 			obj.transform.position = Vector3.Lerp(pos1, pos2, time);
 			obj2.transform.position = Vector3.Lerp(pos2, pos1, time);
 			yield return null;
@@ -133,7 +132,7 @@ public class Grid : MonoBehaviour
 			{
 				if (block.Watered)
 				{
-					block.Represent.GetComponent<Renderer>().material.color = Color.black;// = block.Represent.GetComponent<Renderer>().sharedMaterial;
+					block.Represent.GetComponent<Renderer>().material.color = Color.white;// = block.Represent.GetComponent<Renderer>().sharedMaterial;
 				}
 				block.Watered = false;
 				
@@ -142,7 +141,7 @@ public class Grid : MonoBehaviour
 	}
 	public void WaterFlow(int w,int h)
 	{
-		if (!Blocks[w][h].Watered)
+		if (!Blocks[w][h].Watered && ! (Blocks[w][h] is EmptyBlock ))
 		{
 			Blocks[w ][h ].Represent
 					.GetComponent<Renderer>().material.color = Color.blue;
@@ -185,13 +184,13 @@ public class Grid : MonoBehaviour
 	{
 
 		int num = number;
-		string path = Application.dataPath + "/" + "level" + (num).ToString() + ".txt";
+		string path = Application.dataPath + "/Resources/" + "level" + (num).ToString() + ".txt";
 		if (!rewrite)
 		{
 			while (File.Exists(path))
 			{
 				num++;
-				path = Application.dataPath + "/" + "level" + num.ToString() + ".txt";
+				path = Application.dataPath + "/Resources/" + "level" + num.ToString() + ".txt";
 			}
 		}
 		level = num;
@@ -245,21 +244,24 @@ public class Grid : MonoBehaviour
 
 	public void ReCreateGrid()
 	{
-		string path = Application.dataPath + "/" + "level" + level.ToString() + ".txt";
+		string path = Application.dataPath + "/Resources/" + "level" + level.ToString() + "";
+		TextAsset tx= (TextAsset)Resources.Load("level" + level.ToString());
 
-		print(path);
-
-		if (File.Exists(path))
-		{
+		//if (File.Exists(path+".txt"))
+		//{
 			print(path);
-			FileStream reader = new FileStream(path, FileMode.Open);
+
+		
+
+			byte[] bytes = tx.bytes;
+			MemoryStream reader = new MemoryStream(bytes);
 			BinaryFormatter bf = new BinaryFormatter();
 			Blocks = bf.Deserialize(reader) as List<List<Block>>;
 			reader.Close();
 
 
 
-		}
+		//}
 
 
 		GameObject Base = gameObject;// new GameObject("GridBase");
@@ -280,7 +282,6 @@ public class Grid : MonoBehaviour
 				Quaternion rotate = Quaternion.identity * rotBase	; 
 				if ((Blocks[i][j] as EmptyBlock) != null)
 				{
-					print(PrefabsPool.Instanse.name);
 					obj = Instantiate(PrefabsPool.Instanse.EmptyBlock, translate,rotate);
 					block = new EmptyBlock(i, j, obj);
 
@@ -288,6 +289,8 @@ public class Grid : MonoBehaviour
 				else
 				{
 					obj = Instantiate(PrefabsPool.Instanse.Block, translate, rotate);
+					obj.GetComponent<Renderer>().material.color = Color.white;
+
 					//block = new Block(i, j, obj);
 					if (i==WaterStart.IndexWidth&&j==WaterStart.IndexHeight)
 					{
@@ -314,12 +317,13 @@ public class Grid : MonoBehaviour
 
 		WaterStart = new Coordinate(0, 0);
 		
-		//CreateGrid();		
+		//CreateGrid();	
 	}
-
+	
 	// Update is called once per frame
 	void Update()
 	{
+
 		if (Input.GetMouseButtonDown(0))
 		{
 			RaycastHit hit;
@@ -329,6 +333,36 @@ public class Grid : MonoBehaviour
 			{
 				print(hit.transform.name);
 				BlockID b = hit.transform.GetComponent<BlockID>();
+				if (b.Grid == this)
+				{
+					foreach (var dir in GetValidDirs(b.IndexWidth, b.IndexHeight))
+					{
+						if ((Blocks[b.IndexWidth + dir.IndexWidth][b.IndexHeight + dir.IndexHeight] as EmptyBlock) != null)
+						{
+
+							Shift(b.IndexWidth, b.IndexHeight, dir, ref Blocks);
+							SwithOffAll();
+							WaterFlow(WaterStart.IndexWidth, WaterStart.IndexHeight);
+
+							break;
+						}
+						//Blocks[b.IndexWidth][b.IndexHeight].Shift(Blocks[b.IndexWidth + dir.X][b.IndexHeight + dir.Y], ref Blocks);
+					}
+				}
+			}
+
+
+
+		}
+		if (Input.touchCount == 1)
+		{
+			// touch on screen
+			if (Input.GetTouch(0).phase == TouchPhase.Began)
+			{
+				Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+				RaycastHit hit = new RaycastHit();
+				BlockID b = hit.transform.GetComponent<BlockID>();
+
 				if (b.Grid == this)
 				{
 					foreach (var dir in GetValidDirs(b.IndexWidth, b.IndexHeight))
