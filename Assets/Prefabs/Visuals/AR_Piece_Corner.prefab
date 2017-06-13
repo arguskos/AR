@@ -71,6 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4640956812906358}
   - component: {fileID: 114922961098150446}
+  - component: {fileID: 65089377971533418}
   m_Layer: 0
   m_Name: AR_Piece_Corner
   m_TagString: ARPiece
@@ -179,7 +180,7 @@ Transform:
   m_GameObject: {fileID: 1399442918587832}
   m_LocalRotation: {x: -0, y: -0.7071067, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0.5091195, y: 2.1093194, z: -0.4770093}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children:
   - {fileID: 4093645866968250}
   m_Father: {fileID: 0}
@@ -421,6 +422,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1252579377650394}
   m_Mesh: {fileID: 4300002, guid: a864f339422c46945af2e1d1e2f0523d, type: 3}
+--- !u!65 &65089377971533418
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1399442918587832}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114922961098150446
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -444,4 +457,5 @@ MonoBehaviour:
   MatBeam: {fileID: 2100000, guid: d4fe5069c2cd28e4883f295a74e56d18, type: 2}
   MatBlack: {fileID: 2100000, guid: 559adaebabcb4424793cfe2a44956856, type: 2}
   MatWhite: {fileID: 2100000, guid: 703fad1f348d5404e99478a28c953051, type: 2}
+  MatBlocked: {fileID: 0}
   IsCorrect: 0

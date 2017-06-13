@@ -16,6 +16,8 @@ public class PuzzlePieceVisuals : MonoBehaviour {
     public Material MatBeam;
     public Material MatBlack;
     public Material MatWhite;
+    public Material MatBlocked;
+
     [Space(10)]
 
     [Header("Bools")]
@@ -31,13 +33,21 @@ public class PuzzlePieceVisuals : MonoBehaviour {
     private GameObject _particlePortal;
 
     // Use this for initialization
-    void Start ()
+
+    void Awake()
     {
+        transform.localScale = new Vector3(MainGridDrawer.Instance.Properties.Scale, MainGridDrawer.Instance.Properties.Scale, MainGridDrawer.Instance.Properties.Scale);
         GetVisualManager();
         RandomizeVariables();
         //LoopRotationAndPositionOffsets();
         _particlePortal = Instantiate(ParticlePortalPrefab, CircleMesh.transform);
         _particlePortal.SetActive(false);
+        _particlePortal.transform.localScale =CircleMesh.transform.parent.transform.localScale;
+
+    }
+    void Start ()
+    {
+     
     }
 	
 	// Update is called once per frame
@@ -50,7 +60,7 @@ public class PuzzlePieceVisuals : MonoBehaviour {
         //}
     }
 
-    void SetCorrect(bool iscorrect)
+    public void SetCorrect(bool iscorrect)
     {
         IsCorrect = iscorrect;
         StartCoroutine(Shake(0.025f * (_suspenseValue), Random.Range(0.25f, 0.5f), CircleMesh));
@@ -111,7 +121,7 @@ public class PuzzlePieceVisuals : MonoBehaviour {
 
     public void GetVisualManager()
     {
-        _visualManager = GameObject.FindGameObjectWithTag("VisualManager").GetComponent<VisualManager>();
+        _visualManager = GameObject.FindObjectOfType<VisualManager>();
         _suspenseValue = _visualManager.SuspenseValue;
         _linerenderLifetime = _visualManager.LineRendererTemplate.GetComponent<LineRendererVisuals>().LifeTime;
     }

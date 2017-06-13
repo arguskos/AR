@@ -2,7 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
+[System.Serializable]
+public enum Directions
+{
+    UpDown,
+    LeftRIght,
+    LeftUp,
+    LeftDown,
+    RightUp,
+    RightDown
+}
 [System.Serializable]
 public class Block
 {
@@ -11,15 +20,71 @@ public class Block
 		X = x;
 		Y = y;
 		Represent = obj;
-		Connections.Add(new Dir(1, 0), Random.Range(0,2)==0 ? true : false);
-		Connections.Add(new Dir(-1, 0), Random.Range(0, 2) == 0 ? true : false);
-		Connections.Add(new Dir(0, -1), Random.Range(0,2) == 0 ? true : false);
-		Connections.Add(new Dir(0, 1), Random.Range(0, 2) == 0 ? true : false);
-		
+        
+
+		//Connections.Add(new Dir(1, 0), Random.Range(0,2)==0 ? true : false);
+		//Connections.Add(new Dir(-1, 0), Random.Range(0, 2) == 0 ? true : false);
+		//Connections.Add(new Dir(0, -1), Random.Range(0,2) == 0 ? true : false);
+		//Connections.Add(new Dir(0, 1), Random.Range(0, 2) == 0 ? true : false);
+		Direction= SetRandomDir();
 
 	}
 
+    private Directions SetRandomDir()
+    {
+        int rnd = Random.Range(0,6);
+        var direction = Directions.LeftRIght;
+        switch (rnd)
+        {
+            case 0 :
+                Connections.Add(new Dir(1,0),true );
+                Connections.Add(new Dir(-1, 0), true);
+                Connections.Add(new Dir(0, -1), false);
+                Connections.Add(new Dir(0, 1), false);
+                direction=Directions.UpDown;
+                
+                break;
+            case 1:
+                Connections.Add(new Dir(1, 0), false);
+                Connections.Add(new Dir(-1, 0), false);
+                Connections.Add(new Dir(0, -1), true);
+                Connections.Add(new Dir(0, 1), true);
+                direction = Directions.LeftRIght;
+                break;
+            case 2:
+                Connections.Add(new Dir(1, 0), true);
+                Connections.Add(new Dir(-1, 0), false);
+                Connections.Add(new Dir(0, -1), true);
+                Connections.Add(new Dir(0, 1), false);
+                direction = Directions.RightDown;
+                break;
+            case 3:
+                Connections.Add(new Dir(1, 0), false);
+                Connections.Add(new Dir(-1, 0), true);
+                Connections.Add(new Dir(0, -1), false);
+                Connections.Add(new Dir(0, 1), true);
+                direction = Directions.LeftUp;
+                break;
 
+            case 4:
+                Connections.Add(new Dir(1, 0), true);
+                Connections.Add(new Dir(-1, 0), false);
+                Connections.Add(new Dir(0, -1), false);
+                Connections.Add(new Dir(0, 1), true);
+                direction = Directions.RightUp;
+                break;
+            case 5:
+                Connections.Add(new Dir(1, 0), false);
+                Connections.Add(new Dir(-1, 0), true);
+                Connections.Add(new Dir(0, -1), true);
+                Connections.Add(new Dir(0, 1), false);
+                direction = Directions.LeftDown;
+                break;
+        }
+        return direction;
+    }
+
+    public Directions Direction;
 	public Dictionary<Dir, bool> Connections = new Dictionary<Dir, bool>();
 	public int X, Y;
 	public bool Watered;

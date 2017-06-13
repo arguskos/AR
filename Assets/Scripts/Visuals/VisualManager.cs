@@ -18,12 +18,12 @@ public class VisualManager : MonoBehaviour {
     public List<GameObject> _lineRendererPool = new List<GameObject>();
 
     //Constants
-    public float BreathingSlowScale = 0.085f;
-    public float BreathingSlowSpeed = 0.75f;
-    public float BreathingPunchScale = 0.7f;
-    public float BreathingPunchSpeed = 1.25f;
-    public float BreathingFastPunchScale = 0.1f;
-    public float BreathingFastPunchSpeed = 2.0f;
+    public readonly float BreathingSlowScale = 0.085f;
+    public readonly float BreathingSlowSpeed = 0.75f;
+    public readonly float BreathingPunchScale = 0.7f;
+    public readonly float BreathingPunchSpeed = 1.25f;
+    public readonly float BreathingFastPunchScale = 0.1f;
+    public readonly float BreathingFastPunchSpeed = 2.0f;
 
     // Use this for initialization
     void Start () {

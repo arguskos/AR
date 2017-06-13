@@ -59,23 +59,28 @@ MonoBehaviour:
   ConnectionPointA: {fileID: 0}
   ConnectionPointB: {fileID: 0}
   LifeTimeTint:
+    serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 2
       outSlope: 2
       tangentMode: 0
-    - time: 0.24684332
+    - serializedVersion: 2
+      time: 0.24684332
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 0.7658823
+    - serializedVersion: 2
+      time: 0.7658823
       value: 1.0062499
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 1
+    - serializedVersion: 2
+      time: 1
       value: 0
       inSlope: 0
       outSlope: 0

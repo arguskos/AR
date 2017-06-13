@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
   <Tracking>
+    <ImageTarget name="ARTest_Wall_Simplified" size="1.000000 1.000000" />
+    <ImageTarget name="ARTest_Wall_Transparent" size="1.000000 1.000000" />
+    <ImageTarget name="ARTest_Wall" size="1.000000 1.000000" />
     <ImageTarget name="LOL" size="1.000000 0.700000" />
     <ImageTarget name="NEW" size="297.000000 207.899994" />
     <ImageTarget name="Blog-le-vieux-biniou" size="210.000000 297.000000" />

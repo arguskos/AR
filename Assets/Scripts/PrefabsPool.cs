@@ -6,7 +6,7 @@ public class PrefabsPool : MonoBehaviour {
 
 	// Use this for initialization
 
-	public GameObject Block, EmptyBlock;
+	public GameObject Block, EmptyBlock,Straight,Curved;
 	public static PrefabsPool Instanse;
 	public void Awake()
 	{

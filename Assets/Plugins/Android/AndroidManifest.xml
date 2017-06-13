@@ -3,7 +3,7 @@
   
    <uses-permission android:name="android.permission.NFC" />
     <uses-feature android:name="android.hardware.nfc" />
-        <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,8 +15,18 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
-    </activity>
-    
+ 
+            <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
+            <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="false" />
+        </activity>
+
+          <uses-library android:name="com.ti.s3d" android:required="false" />
+        <!--
+            To support the ODG R7 in stereo mode we must add the following library.
+        -->
+        <uses-library android:name="com.osterhoutgroup.api.ext" android:required="false" />
+
+
      <activity android:name=".ScanNFCActivity" />
      
     

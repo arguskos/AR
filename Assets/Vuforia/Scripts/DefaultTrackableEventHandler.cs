@@ -82,7 +82,10 @@ namespace Vuforia
             {
                 component.enabled = true;
             }
-
+            foreach (Transform obj in transform)
+            {
+                obj.transform.parent = null;
+            }
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
         }
 
