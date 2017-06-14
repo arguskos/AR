@@ -7,10 +7,12 @@ public class CamerasManager : MonoBehaviour
 
 
     public Camera PuzzleCamera;
+    public Camera UiCamera;
 
     public Camera ARCamera;
     public GameObject CameraEndPos;
     public static CamerasManager Instance;
+    public Camera CurrentCamera;
     public void Awake()
     {
         if (Instance== null)
@@ -19,10 +21,33 @@ public class CamerasManager : MonoBehaviour
         }
     }
 	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+	{
+        SetCamera(UiCamera);
 	}
 
+    public void SetCamera(Camera cam)
+    {
+
+        CurrentCamera = cam;
+        SwitchNotActive();
+    }
+
+    private void SwitchNotActive()
+    {
+        if (CurrentCamera !=ARCamera)
+        {
+            ARCamera.gameObject.SetActive(false);
+        }
+        if (CurrentCamera != UiCamera)
+        {
+            UiCamera.gameObject.SetActive(false);
+        }
+        if (CurrentCamera != PuzzleCamera)
+        {
+            PuzzleCamera.gameObject.SetActive(false);
+        }
+    }
     private IEnumerator InnerSwitching()
     {
         ARCamera.gameObject.SetActive(false);
@@ -39,6 +64,7 @@ public class CamerasManager : MonoBehaviour
             yield return null;
 
         }
+        CurrentCamera = PuzzleCamera;
     }
 
     public void Switching()
