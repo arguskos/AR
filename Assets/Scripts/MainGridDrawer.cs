@@ -1,8 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Security.Policy;
-using NUnit.Framework.Constraints;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class MainGridDrawer : MonoBehaviour
@@ -190,12 +187,14 @@ public class MainGridDrawer : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            print("hut");
+            Ray ray = CamerasManager.Instance.CurrentCamera.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit))
             {
                 
                 GridBase grid = hit.transform.GetComponent<GridBase>();
+                    
                 if (grid != null)
                 {
                     //action 
@@ -212,7 +211,7 @@ public class MainGridDrawer : MonoBehaviour
             // touch on screen
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+                Ray ray = CamerasManager.Instance.CurrentCamera.ScreenPointToRay(Input.GetTouch(0).position);
                 RaycastHit hit = new RaycastHit();
                 GridBase grid = hit.transform.GetComponent<GridBase>();
                 if (grid != null)

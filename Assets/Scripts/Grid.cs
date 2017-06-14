@@ -322,9 +322,9 @@ public class Grid : MonoBehaviour
 
         GameObject Base = gameObject;// new GameObject("GridBase");
         var plane = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        plane.transform.localScale = new Vector3(5*Size, 0.01f, 5*Size);
+        plane.transform.localScale = new Vector3(5 * Size, 0.01f, 5 * Size);
         plane.GetComponent<Renderer>().material.color = Color.gray;
-        plane.transform.position = new Vector3(transform.position.x, transform.position.y-0.01f,transform.position.z);
+        plane.transform.position = new Vector3(transform.position.x, transform.position.y - 0.01f, transform.position.z);
         plane.transform.parent = Base.transform;
         Destroy(plane.GetComponent<BoxCollider>());
 
@@ -437,7 +437,7 @@ public class Grid : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = CamerasManager.Instance.CurrentCamera.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit))
             {
@@ -472,7 +472,7 @@ public class Grid : MonoBehaviour
             // touch on screen
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+                Ray ray = CamerasManager.Instance.CurrentCamera.ScreenPointToRay(Input.GetTouch(0).position);
                 RaycastHit hit = new RaycastHit();
                 BlockID b = hit.transform.GetComponent<BlockID>();
 

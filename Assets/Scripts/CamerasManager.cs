@@ -11,6 +11,7 @@ public class CamerasManager : MonoBehaviour
     public Camera ARCamera;
     public GameObject CameraEndPos;
     public static CamerasManager Instance;
+    public Camera CurrentCamera;
     public void Awake()
     {
         if (Instance== null)
@@ -19,8 +20,10 @@ public class CamerasManager : MonoBehaviour
         }
     }
 	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+	{
+	    CurrentCamera = ARCamera;
+
 	}
 
     private IEnumerator InnerSwitching()
@@ -39,6 +42,7 @@ public class CamerasManager : MonoBehaviour
             yield return null;
 
         }
+        CurrentCamera = PuzzleCamera;
     }
 
     public void Switching()
