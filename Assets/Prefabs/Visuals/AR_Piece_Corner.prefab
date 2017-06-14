@@ -457,5 +457,5 @@ MonoBehaviour:
   MatBeam: {fileID: 2100000, guid: d4fe5069c2cd28e4883f295a74e56d18, type: 2}
   MatBlack: {fileID: 2100000, guid: 559adaebabcb4424793cfe2a44956856, type: 2}
   MatWhite: {fileID: 2100000, guid: 703fad1f348d5404e99478a28c953051, type: 2}
-  MatBlocked: {fileID: 0}
+  MatBlocked: {fileID: 2100000, guid: 55903a3431eea9145a3424e6740f4cbf, type: 2}
   IsCorrect: 0
