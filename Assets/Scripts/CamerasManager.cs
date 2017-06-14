@@ -7,6 +7,7 @@ public class CamerasManager : MonoBehaviour
 
 
     public Camera PuzzleCamera;
+    public Camera UiCamera;
 
     public Camera ARCamera;
     public GameObject CameraEndPos;
@@ -22,10 +23,31 @@ public class CamerasManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-	    CurrentCamera = ARCamera;
-
+        SetCamera(UiCamera);
 	}
 
+    public void SetCamera(Camera cam)
+    {
+
+        CurrentCamera = cam;
+        SwitchNotActive();
+    }
+
+    private void SwitchNotActive()
+    {
+        if (CurrentCamera !=ARCamera)
+        {
+            ARCamera.gameObject.SetActive(false);
+        }
+        if (CurrentCamera != UiCamera)
+        {
+            UiCamera.gameObject.SetActive(false);
+        }
+        if (CurrentCamera != PuzzleCamera)
+        {
+            PuzzleCamera.gameObject.SetActive(false);
+        }
+    }
     private IEnumerator InnerSwitching()
     {
         ARCamera.gameObject.SetActive(false);

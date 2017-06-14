@@ -45,20 +45,7 @@ public class PuzzlePieceVisuals : MonoBehaviour {
         _particlePortal.transform.localScale =CircleMesh.transform.parent.transform.localScale;
 
     }
-    void Start ()
-    {
-     
-    }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        //_suspenseValue = _visualManager.SuspenseValue;
-        //if (/*(Input.GetTouch(0).phase == TouchPhase.Began ||*/ (Input.GetKeyDown(KeyCode.Mouse0)) && !_isShaking)
-        //{
-        //    SetCorrect(IsCorrect);
-        //}
-    }
+  
 
     public void SetCorrect(bool iscorrect)
     {

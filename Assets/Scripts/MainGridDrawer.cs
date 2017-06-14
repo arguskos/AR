@@ -38,7 +38,7 @@ public class MainGridDrawer : MonoBehaviour
         _dirs.Add(new Dir(0, 1));
         _dirs.Add(new Dir(0, -1));
 
-        UI.Instane.OnLevelAction += NextLevel;
+        //UI.Instane.OnLevelAction += NextLevel;
         for (int i = 0; i < Levels.Length; i++)
         {
             var gr = new GameObject("grid");
