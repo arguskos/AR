@@ -38,7 +38,7 @@ public class CamerasManager : MonoBehaviour
         if (DebugAR)
         {
             ARCamera = GameObject.FindGameObjectWithTag("DebugCamera").GetComponent<Camera>();
-            SetCamera(ARCamera);
+            SetCamera(UiCamera);
         }
     }
 
