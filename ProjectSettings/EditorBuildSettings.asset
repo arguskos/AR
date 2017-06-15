@@ -35,6 +35,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Debug/TempScanMenu.unity
     guid: 521c8fb44d33cc0488dc708ab91d8f11
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PlaceOnDots.unity
     guid: 142e4afbff35ce248bc205bed3369488
+  - enabled: 0
+    path: Assets/Scenes/Alpha.unity
+    guid: b10763655bd656842b3583b2acf1610c
+  - enabled: 1
+    path: Assets/Scenes/Alpha + Alpha.unity
+    guid: be5c9949f1c17024683bfd8123eb2cba

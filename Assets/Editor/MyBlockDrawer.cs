@@ -66,9 +66,26 @@ public class MyBlockDrawer : Editor
 			//		t.MomentInfo2.Add(new MomentInfo(temp));
 			//	}
 		}
+	    if (GUILayout.Button("Block"))
+	    {
+	        var t = (target as BlockID);
 
+	        if ((_grid.Blocks[t.IndexWidth][t.IndexHeight] as Block) != null)
+	        {
+	            _grid.Blocks[t.IndexWidth][t.IndexHeight].Blocked = true;
+	            _grid.SaveLevel(_grid.level);
 
-		this.Repaint();
+            }
+
+	        //{
+	        //	t.MomentInfo2.Clear();
+	        //	foreach (var temp in Parameters.Names)
+	        //	{
+	        //		t.MomentInfo2.Add(new MomentInfo(temp));
+	        //	}
+	    }
+
+        this.Repaint();
 
 	}
 }

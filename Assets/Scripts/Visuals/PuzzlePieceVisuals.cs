@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PieceState
+{
+    Correct,
+    Blocked,
+    NotCorrect
+}
 public class PuzzlePieceVisuals : MonoBehaviour {
 
     [Header("Gameobjects")]
@@ -22,6 +28,11 @@ public class PuzzlePieceVisuals : MonoBehaviour {
 
     [Header("Bools")]
     public bool IsCorrect = false;
+
+    public bool IsBlocked = false;
+
+    private PieceState _currentState = PieceState.NotCorrect;
+
     [Space(10)]
 
     private bool _isShaking;
@@ -45,13 +56,22 @@ public class PuzzlePieceVisuals : MonoBehaviour {
         _particlePortal.transform.localScale =CircleMesh.transform.parent.transform.localScale;
 
     }
-  
 
-    public void SetCorrect(bool iscorrect)
+    public void Start()
     {
-        IsCorrect = iscorrect;
+        //SetState(false);
+    }
+
+    public void SetState(PieceState state)
+    {
+        _currentState = state;
+        SetState();
+    }
+    private void SetState()
+    {
+       // IsCorrect = iscorrect;
         StartCoroutine(Shake(0.025f * (_suspenseValue), Random.Range(0.25f, 0.5f), CircleMesh));
-        if (IsCorrect)
+        if (_currentState==PieceState.Correct)
         {
             ParticleSystem ps = _particlePortal.GetComponent<ParticleSystem>();
             _particlePortal.SetActive(true);
@@ -66,16 +86,28 @@ public class PuzzlePieceVisuals : MonoBehaviour {
                 SetMaterials(SphereMesh[i], MatActive);
             }
         }
-        else
+        else if (_currentState == PieceState.NotCorrect)
         {
             _particlePortal.SetActive(false);
             SetMaterials(CircleMesh, MatBlack);
-            SetMaterials(BeamMesh, MatWhite);
+            SetMaterials(BeamMesh, MatBlack);
             for (int i = 0; i < SphereMesh.Length; i++)
             {
-                SetMaterials(SphereMesh[i], MatWhite);
+                SetMaterials(SphereMesh[i], MatBlack);
             }
-            SetMaterials(SphereMesh[0], MatWhite);
+            SetMaterials(SphereMesh[0], MatBlack);
+        }
+
+        else if (_currentState == PieceState.Blocked)
+        {
+            _particlePortal.SetActive(false);
+            SetMaterials(CircleMesh, MatBlocked);
+            SetMaterials(BeamMesh, MatBlocked);
+            for (int i = 0; i < SphereMesh.Length; i++)
+            {
+                SetMaterials(SphereMesh[i], MatBlocked);
+            }
+            SetMaterials(SphereMesh[0], MatBlocked);
         }
     }
 

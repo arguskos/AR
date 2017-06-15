@@ -11,5 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9a944cbc2cfc5d4ebeeddacb2fc90c1, type: 3}
   m_Name: Propertie 1
   m_EditorClassIdentifier: 
-  Scale: 0.03
+  Scale: 1
   DistanceFromCenter: 0.001

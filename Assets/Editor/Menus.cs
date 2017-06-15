@@ -12,7 +12,7 @@ public static class Menus
 	static void SpecialCommand()
 	{
 		Debug.Log("You used the shortcut Cmd+G (Mac)  Ctrl+G (Win)");
-		var script = GameObject.Find("Grid").GetComponent<Grid>();
+		var script = GameObject.FindObjectOfType<Grid>();
 		script.CreateGrid();
 	}
 }

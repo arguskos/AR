@@ -15,7 +15,13 @@ public enum Directions
 [System.Serializable]
 public class Block
 {
-	public Block(int x, int y, GameObject obj)
+
+    public Directions Direction;
+    public Dictionary<Dir, bool> Connections = new Dictionary<Dir, bool>();
+    public int X, Y;
+    public bool Correct;
+    public bool Blocked=false;
+    public Block(int x, int y, GameObject obj)
 	{
 		X = x;
 		Y = y;
@@ -84,10 +90,7 @@ public class Block
         return direction;
     }
 
-    public Directions Direction;
-	public Dictionary<Dir, bool> Connections = new Dictionary<Dir, bool>();
-	public int X, Y;
-	public bool Watered;
+
 	public virtual void DrawConnections()
 	{
 		foreach (var item in Connections)

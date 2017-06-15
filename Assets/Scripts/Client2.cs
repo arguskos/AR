@@ -64,7 +64,6 @@ public class Client2 : MonoBehaviour
                 var m = BF.Deserialize(ms1) as Message.Message;
                 if (m.Type == Message.Message.MessageType.OnNewMoment)
                 {
-                    print("NEW MOMENT RECIEVED");
                     Handheld.Vibrate();
 
                 }

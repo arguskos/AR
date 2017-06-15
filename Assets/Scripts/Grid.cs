@@ -130,25 +130,25 @@ public class Grid : MonoBehaviour
         {
             foreach (Block block in item)
             {
-                if (block.Watered)
+                if (block.Correct)
                 {
-                    block.Represent.GetComponent<PuzzlePieceVisuals>().SetCorrect(false);
+                    block.Represent.GetComponent<PuzzlePieceVisuals>().SetState(PieceState.NotCorrect);
                     //block.Represent.GetComponent<Renderer>().material.color = Color.white;// = block.Represent.GetComponent<Renderer>().sharedMaterial;
                 }
-                block.Watered = false;
+                block.Correct = false;
 
             }
         }
     }
     public void WaterFlow(int w, int h)
     {
-        if (!Blocks[w][h].Watered && !(Blocks[w][h] is EmptyBlock))
+        if (!Blocks[w][h].Correct && !(Blocks[w][h] is EmptyBlock))
         {
             //Blocks[w ][h ].Represent
             //		.GetComponent<Renderer>().material.color = Color.blue;
-            Blocks[w][h].Represent.GetComponent<PuzzlePieceVisuals>().SetCorrect(true);
+            Blocks[w][h].Represent.GetComponent<PuzzlePieceVisuals>().SetState(PieceState.Correct);
 
-            Blocks[w][h].Watered = true;
+            Blocks[w][h].Correct = true;
 
             foreach (var dir in GetValidDirs(w, h))
             {
@@ -203,7 +203,7 @@ public class Grid : MonoBehaviour
         fs.Close();
     }
 
-    private void PlaceBlocs(int indexI,int indexJ,PrefabsPool prefabs, Block block,  out GameObject obj,Vector3 tranform)
+    private void PlaceBlocs(int indexI, int indexJ, PrefabsPool prefabs, Block block, out GameObject obj, Vector3 tranform)
     {
         obj = new GameObject("Delete me please");
         DestroyImmediate(obj);
@@ -264,7 +264,7 @@ public class Grid : MonoBehaviour
             for (int j = 0; j < Height; j++)
             {
                 Block block;
-                GameObject obj=new GameObject("Delete me please");
+                GameObject obj = new GameObject("Delete me please");
 
                 Vector3 translate = new Vector3(i * Size, 0, j * Size);
 
@@ -278,7 +278,7 @@ public class Grid : MonoBehaviour
                 else
                 {
                     block = new Block(i, j, null);
-                    PlaceBlocs(i, j, pool, block, out obj,translate);
+                    PlaceBlocs(i, j, pool, block, out obj, translate);
 
 
 
@@ -339,12 +339,12 @@ public class Grid : MonoBehaviour
             {
                 Block block;
                 GameObject obj;
-                Vector3 translate = new Vector3(i * Size-Size*Width/2+Size/2, 0, j * Size-Size*Height/2+Size/2);
+                Vector3 translate = new Vector3(i * Size - Size * Width / 2 + Size / 2, 0, j * Size - Size * Height / 2 + Size / 2);
                 Quaternion rotate = Quaternion.identity * rotBase;
                 if ((Blocks[i][j] as EmptyBlock) != null)
                 {
                     obj = Instantiate(PrefabsPool.Instanse.EmptyBlock, translate, rotate);
-                    obj.transform.localScale = new Vector3(Size,Size,Size);
+                    obj.transform.localScale = new Vector3(Size, Size, Size);
                     block = new EmptyBlock(i, j, obj);
 
                 }
@@ -388,12 +388,16 @@ public class Grid : MonoBehaviour
 
 
 
-
-                    PlaceBlocs(i, j, PrefabsPool.Instanse, Blocks[i][j], out obj,translate);
-
-
+                  
+                    PlaceBlocs(i, j, PrefabsPool.Instanse, Blocks[i][j], out obj, translate);
 
 
+
+                    if (Blocks[i][j].Blocked)
+                    {
+                        obj.GetComponent<PuzzlePieceVisuals>().SetState(PieceState.Blocked);
+
+                    }
                     //if (Blocks[i][j].Direction == Directions.UpDown)
                     //{
                     //    obj.transform.Rotate(0, 90, 0);
@@ -404,7 +408,7 @@ public class Grid : MonoBehaviour
                     if (i == WaterStart.IndexWidth && j == WaterStart.IndexHeight)
                     {
                         //	obj.GetComponent<Renderer>().material.color = Color.blue;
-                        obj.GetComponent<PuzzlePieceVisuals>().SetCorrect(true);
+                        obj.GetComponent<PuzzlePieceVisuals>().SetState(PieceState.Correct);
 
                     }
                     //obj.GetComponent<Renderer>().material.color = new Color(Random.value, Random.value, 1);
@@ -430,6 +434,27 @@ public class Grid : MonoBehaviour
 
         //CreateGrid();	
     }
+
+    private void InternalShift( ref BlockID b)
+    {
+        if (b.Grid == this)
+        {
+            foreach (var dir in GetValidDirs(b.IndexWidth, b.IndexHeight))
+            {
+                if ((Blocks[b.IndexWidth + dir.IndexWidth][
+                        b.IndexHeight + dir.IndexHeight] as EmptyBlock) != null && !Blocks[b.IndexWidth][b.IndexHeight].Blocked)
+                {
+
+                    Shift(b.IndexWidth, b.IndexHeight, dir, ref Blocks);
+                    SwithOffAll();
+                    WaterFlow(WaterStart.IndexWidth, WaterStart.IndexHeight);
+
+                    break;
+                }
+                //Blocks[b.IndexWidth][b.IndexHeight].Shift(Blocks[b.IndexWidth + dir.X][b.IndexHeight + dir.Y], ref Blocks);
+            }
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -443,24 +468,8 @@ public class Grid : MonoBehaviour
             {
                 if (hit.transform.GetComponent<BlockID>() != null)
                 {
-                    BlockID b = hit.transform.GetComponent<BlockID>(); 
-                    if (b.Grid == this)
-                    {
-                        foreach (var dir in GetValidDirs(b.IndexWidth, b.IndexHeight))
-                        {
-                            if ((Blocks[b.IndexWidth + dir.IndexWidth][
-                                    b.IndexHeight + dir.IndexHeight] as EmptyBlock) != null)
-                            {
-
-                                Shift(b.IndexWidth, b.IndexHeight, dir, ref Blocks);
-                                SwithOffAll();
-                                WaterFlow(WaterStart.IndexWidth, WaterStart.IndexHeight);
-
-                                break;
-                            }
-                            //Blocks[b.IndexWidth][b.IndexHeight].Shift(Blocks[b.IndexWidth + dir.X][b.IndexHeight + dir.Y], ref Blocks);
-                        }
-                    }
+                    BlockID b = hit.transform.GetComponent<BlockID>();
+                    InternalShift(ref b);
                 }
             }
 
@@ -475,23 +484,23 @@ public class Grid : MonoBehaviour
                 Ray ray = CamerasManager.Instance.CurrentCamera.ScreenPointToRay(Input.GetTouch(0).position);
                 RaycastHit hit = new RaycastHit();
                 BlockID b = hit.transform.GetComponent<BlockID>();
+                InternalShift(ref b);
+                //if (b.Grid == this)
+                //{
+                //    foreach (var dir in GetValidDirs(b.IndexWidth, b.IndexHeight))
+                //    {
+                //        if ((Blocks[b.IndexWidth + dir.IndexWidth][b.IndexHeight + dir.IndexHeight] as EmptyBlock) != null)
+                //        {
 
-                if (b.Grid == this)
-                {
-                    foreach (var dir in GetValidDirs(b.IndexWidth, b.IndexHeight))
-                    {
-                        if ((Blocks[b.IndexWidth + dir.IndexWidth][b.IndexHeight + dir.IndexHeight] as EmptyBlock) != null)
-                        {
+                //            Shift(b.IndexWidth, b.IndexHeight, dir, ref Blocks);
+                //            SwithOffAll();
+                //            WaterFlow(WaterStart.IndexWidth, WaterStart.IndexHeight);
 
-                            Shift(b.IndexWidth, b.IndexHeight, dir, ref Blocks);
-                            SwithOffAll();
-                            WaterFlow(WaterStart.IndexWidth, WaterStart.IndexHeight);
-
-                            break;
-                        }
-                        //Blocks[b.IndexWidth][b.IndexHeight].Shift(Blocks[b.IndexWidth + dir.X][b.IndexHeight + dir.Y], ref Blocks);
-                    }
-                }
+                //            break;
+                //        }
+                //        //Blocks[b.IndexWidth][b.IndexHeight].Shift(Blocks[b.IndexWidth + dir.X][b.IndexHeight + dir.Y], ref Blocks);
+                //    }
+                //}
             }
         }
     }

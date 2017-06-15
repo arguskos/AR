@@ -125,7 +125,7 @@ public class Client : MonoBehaviour
         //{
         //    foreach (var obj in GameObject.FindObjectsOfType<PuzzlePieceVisuals>())
         //    {
-        //        obj.SetCorrect(true);
+        //        obj.SetState(true);
         //    }
         //}
         //print(d.Time);
@@ -176,7 +176,7 @@ public class Client : MonoBehaviour
             {
                 foreach (var obj in GameObject.FindObjectsOfType<PuzzlePieceVisuals>())
                 {
-                    obj.SetCorrect(true);
+                 //   obj.SetState(true);
                 }
             }
         }

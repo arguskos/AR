@@ -17,7 +17,7 @@ public class CamerasManager : MonoBehaviour
 
 
 
-    public bool DebugAR;
+    private bool DebugAR;
     public void Awake()
     {
         if (Instance == null)
@@ -30,6 +30,11 @@ public class CamerasManager : MonoBehaviour
     {
       
         SetCamera(UiCamera);
+
+        #if UNITY_EDITOR
+                DebugAR = true;
+        #endif
+
         if (DebugAR)
         {
             ARCamera = GameObject.FindGameObjectWithTag("DebugCamera").GetComponent<Camera>();
@@ -41,6 +46,14 @@ public class CamerasManager : MonoBehaviour
     {
 
         CurrentCamera = cam;
+        if (cam == ARCamera)
+        {
+            MainGridDrawer.Instance.ShowGrids();
+        }
+        else
+        {
+            MainGridDrawer.Instance.HideGrids();
+        }
         SwitchOffAll();
 
         CurrentCamera.gameObject.SetActive(true);

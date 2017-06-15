@@ -7,6 +7,7 @@ public class GridBase : MonoBehaviour {
 	// Use this for initialization
 
     public int GridID;
+    public Vector3 InitPos;
 	void Start () {
 		
 	}

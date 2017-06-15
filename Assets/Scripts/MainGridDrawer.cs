@@ -14,9 +14,11 @@ public class MainGridDrawer : MonoBehaviour
     private List<Dir> _dirs = new List<Dir>();
     public GameObject ImageTarget;
     public bool AR;
-    public int PlaceRoolID=1;
+    public int PlaceRoolID = 1;
     private Vector3 _centerPos;
     public int SelectedGrid;
+    public int PrevSelected = -1;
+
     public GridProperties Properties;
     public static MainGridDrawer Instance;
 
@@ -41,13 +43,18 @@ public class MainGridDrawer : MonoBehaviour
         //UI.Instane.OnLevelAction += NextLevel;
         for (int i = 0; i < Levels.Length; i++)
         {
+            #if UNITY_EDITOR
+                        AR = false;
+            #endif
+
+         
             var gr = new GameObject("grid");
-            gr.transform.localScale=new Vector3(_size*5,_size*5,+_size*5);
-            gr.AddComponent<BoxCollider>();
-            gr.AddComponent<GridBase>().GridID=i;
+            gr.transform.localScale = new Vector3(_size * 5, _size * 5, +_size * 5);
+            gr.AddComponent<BoxCollider>().size = new Vector3(1, 0.3f, 1);
+            gr.AddComponent<GridBase>().GridID = i;
 
             Grid newGR = gr.AddComponent<Grid>();//.ReCreateGrid();
-            
+
             newGR.Start();
             newGR.Size = _size;
             newGR.level = Levels[i];
@@ -56,7 +63,7 @@ public class MainGridDrawer : MonoBehaviour
             {
                 gr.transform.parent = ImageTarget.transform;
             }
-           // gr.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            // gr.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             if (PlaceRoolID == 1)
             {
                 PlaceRool(ref gr, i);
@@ -98,6 +105,21 @@ public class MainGridDrawer : MonoBehaviour
         //_currentLevel %= _grids.Count;
     }
 
+    public void HideGrids()
+    {
+        foreach (var grid in _grids)
+        {
+            grid.SetActive(false);
+        }
+    }
+
+    public void ShowGrids()
+    {
+        foreach (var grid in _grids)
+        {
+            grid.SetActive(true);
+        }
+    }
     private void PlaceRool(ref GameObject gr, int index)
     {
         gr.transform.position = new Vector3(-0.9f, -index, -0.9f);
@@ -114,7 +136,7 @@ public class MainGridDrawer : MonoBehaviour
         //}
         rotBase.transform.parent = ImageTarget.transform;
         gr.transform.parent = rotBase.transform;
-        
+
         gr.transform.position = new Vector3(Properties.DistanceFromCenter, 0, Properties.DistanceFromCenter);
         rotBase.transform.Rotate(0, 72 * index, 0);
         gr.transform.Rotate(new Vector3(00, -72, 0));
@@ -169,6 +191,8 @@ public class MainGridDrawer : MonoBehaviour
 
         //print(_grids.Count+" "+SelectedGrid);
         _grids[SelectedGrid].GetComponent<BoxCollider>().enabled = false;
+        _grids[SelectedGrid].GetComponent<GridBase>().InitPos =
+            _grids[SelectedGrid].GetComponent<GridBase>().transform.position;
         HideUnActive();
         float time = 0;
         Vector3 pos = _grids[SelectedGrid].gameObject.transform.position;
@@ -177,8 +201,18 @@ public class MainGridDrawer : MonoBehaviour
         {
             time += 0.1f;
             _grids[SelectedGrid].gameObject.transform.position = Vector3.Lerp(pos, end, time);
+            if (PrevSelected != -1)
+            {
+                _grids[PrevSelected].gameObject.transform.position = Vector3.Lerp(end, _grids[PrevSelected].GetComponent<GridBase>().InitPos, time);
+            }
             yield return null;
         }
+        if (PrevSelected != -1)
+        {
+            _grids[PrevSelected].gameObject.GetComponent<BoxCollider>().enabled = true;
+
+        }
+        PrevSelected = SelectedGrid;
         yield return null;
     }
     // Update is called once per frame
@@ -192,15 +226,15 @@ public class MainGridDrawer : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                
+
                 GridBase grid = hit.transform.GetComponent<GridBase>();
-                    
+
                 if (grid != null)
                 {
                     //action 
                     SelectedGrid = grid.GridID;
-                    print( "MainGridS");
-                     StartCoroutine(OnGridSelection.SequenceCourutine(grid));
+                    print("MainGridS");
+                    StartCoroutine(OnGridSelection.SequenceCourutine(grid));
                 }
             }
 
@@ -209,7 +243,8 @@ public class MainGridDrawer : MonoBehaviour
         if (Input.touchCount == 1)
         {
             // touch on screen
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
+
+            if (CamerasManager.Instance.CurrentCamera == CamerasManager.Instance.ARCamera && Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 Ray ray = CamerasManager.Instance.CurrentCamera.ScreenPointToRay(Input.GetTouch(0).position);
                 RaycastHit hit = new RaycastHit();
