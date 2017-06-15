@@ -11,8 +11,11 @@ public class Client2 : MonoBehaviour
 {
 
     public TcpClient TcpClient;
-	// Use this for initialization
-	void Start () {
+
+    public BinaryFormatter BF;
+    // Use this for initialization
+    void Start () {
+        BF=new BinaryFormatter();
 		Connect();
 	   StartCoroutine(GetServerTime());
 	}
@@ -23,6 +26,7 @@ public class Client2 : MonoBehaviour
         TcpClient.Connect("192.168.0.150", 8000);
         // use the ipaddress as in the server program
         print("Connected");
+
     }
 
     public IEnumerator GetServerTime()
@@ -48,29 +52,28 @@ public class Client2 : MonoBehaviour
             if (TcpClient.Client.Available > 0)
             {
                 byte[] b = new byte[4];
-                int k = TcpClient.Client.Receive(b);
+                TcpClient.Client.Receive(b);
 
 
                 //int word = s.Receive(byteForWord);
-                Console.WriteLine("bytes to read " + BitConverter.ToInt32(b, 0));
 
-                Console.WriteLine("Recieved..." + k);
 
                 byte[] byteForWord = new byte[BitConverter.ToInt32(b, 0)];
                 TcpClient.Client.Receive(byteForWord);
                 var ms1 = new MemoryStream(byteForWord);
-                var obj = new BinaryFormatter().Deserialize(ms1) as Message.Message;
-                if (obj.Type == Message.Message.MessageType.OnNewMoment)
+                var m = BF.Deserialize(ms1) as Message.Message;
+                if (m.Type == Message.Message.MessageType.OnNewMoment)
                 {
                     print("NEW MOMENT RECIEVED");
+                    Handheld.Vibrate();
+
                 }
                 ms1.Close();
-                print(obj.Data);
 
 
 
 
-                yield return  new WaitForSeconds(0.1f);
+                yield return  new WaitForSeconds(0.5f);
             }
         }
     }

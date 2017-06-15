@@ -11,4 +11,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75713d9d796f8a7459f95515e5c637f0, type: 3}
   m_Name: RemoveColliderAndShift
   m_EditorClassIdentifier: 
-  Target: {fileID: 0}

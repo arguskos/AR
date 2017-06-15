@@ -187,7 +187,7 @@ public class MainGridDrawer : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
-            print("hut");
+
             Ray ray = CamerasManager.Instance.CurrentCamera.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit))
@@ -199,8 +199,8 @@ public class MainGridDrawer : MonoBehaviour
                 {
                     //action 
                     SelectedGrid = grid.GridID;
-
-                    StartCoroutine(OnGridSelection.SequenceCourutine(grid));
+                    print( "MainGridS");
+                     StartCoroutine(OnGridSelection.SequenceCourutine(grid));
                 }
             }
 
